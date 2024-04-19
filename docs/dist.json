@@ -1,0 +1,3558 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Микросервис \"Самозанятые\"",
+    "meta": "utf-8",
+    "version": "0.0.1",
+    "x-logo": {
+      "url": "https://i.postimg.cc/ydm6sxft/3.png"
+    },
+    "description": "API микросервиса \"Самозанятые\".\nЦель сервиса.\nРеализовать для клиентов Банка в ДБО ФЛ набор функций, требуемых плательщику налога на профессиональных доход (самозанятому), для осуществления взаимодействия с Федеральной налоговой службой России."
+  },
+  "tags": [
+    {
+      "name": "Блок регистрация/привязка прав самозанятого",
+      "description": "Запросы для арботы со статусами и получение данных осамо занятом"
+    },
+    {
+      "name": "Профиль самозанятого."
+    },
+    {
+      "name": "Работа с чеками.( выставление отзыв)"
+    },
+    {
+      "name": "Работа со счетами.(работа с ЮЛ)"
+    },
+    {
+      "name": "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+    },
+    {
+      "name": "Аналитика."
+    },
+    {
+      "name": "Сообщения ФНС, справочная информация."
+    }
+  ],
+  "paths": {
+    "/api/self-employment/v2/client/reRegistration": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Повторная отправка клиента на регистрацию",
+        "operationId": "reRegistration",
+        "responses": {
+          "200": {
+            "description": "Все хорошо. Отправили данные.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseWithLogicalError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/state": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Получение информации о состоянии клиента в системе",
+        "operationId": "clientState",
+        "responses": {
+          "200": {
+            "description": "Данные для формы регистрации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientState"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/registrationData": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Получение информации о пользователе",
+        "operationId": "registrationData",
+        "responses": {
+          "200": {
+            "description": "Данные для формы регистрации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientRegistrationProfile"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/getRegions": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Справочник регионов",
+        "description": "Получение актуального списка регионов, где осуществляется режим НПД",
+        "operationId": "getRegionsList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListRegions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/getActivities": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Получение актуального списка видов деятельности",
+        "description": "Получение актуального списка видов деятельности",
+        "operationId": "getActivitiesList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListActivities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/uiTexts": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Метод получения текстов для UI",
+        "operationId": "getUIText",
+        "responses": {
+          "200": {
+            "description": "Возвращает текстовки для пользовательского UI.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListUIModelText"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ошибка, в данный момент приложение не доступно."
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/admin/errors": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Метод списка возможных ошибок",
+        "operationId": "getErrors",
+        "responses": {
+          "200": {
+            "description": "Возвращает список ошибок.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListSeError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Метод изменения ошибок",
+        "operationId": "updateErrors",
+        "requestBody": {
+          "description": "Данные по ошибке",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeError"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает результат сохранения.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseWithLogicalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/clientFnsRegistration": {
+      "post": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Запрос на постановку на учет / привязку НП НПД к платформе-Партнеру",
+        "requestBody": {
+          "description": "Данные для регистрации клиента в ФНС",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FnsRegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "operationId": "clientFnsRegistration",
+        "responses": {
+          "200": {
+            "description": "Все хорошо.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/profile": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Метод получения информации по профилю пользователя",
+        "operationId": "getProfile",
+        "responses": {
+          "200": {
+            "description": "Возвращает информацию по профилю пользователя",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseProfileInfo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ошибка, в данный момент приложение не доступно."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Метод изменения информации по профилю пользователя",
+        "operationId": "updateProfile",
+        "requestBody": {
+          "description": "Данные по информации по профилю пользователя",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает результат сохранения.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/granted/taxpayment/add": {
+      "get": {
+        "tags": [
+          "Блок регистрация/привязка прав самозанятого"
+        ],
+        "summary": "Установка прав",
+        "description": "Установка прав",
+        "operationId": "grantedTaxPaymentAdd",
+        "responses": {
+          "200": {
+            "description": "Все хорошо.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/serviceList": {
+      "get": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Получение справочника наименований услуг клиента",
+        "description": "Получение справочника справочника наименований услуг клиента",
+        "operationId": "serviceList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceDictionary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/customerList": {
+      "get": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Получение справочника наименований услуг клиента",
+        "description": "Получение справочника справочника наименований услуг клиента",
+        "operationId": "customerList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDictionary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/dictionarys/unregistrationReasonsList": {
+      "get": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Получения причин самостоятельного снятия НП с учета",
+        "description": "Получения причин самостоятельного снятия НП с учета",
+        "operationId": "unregistrationReasonsList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnregistrationReasonsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/clientFnsUnregistration/ask": {
+      "get": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Подтверждение ознакомления с причиной отказа в снятии учета",
+        "description": "Подтверждение ознакомления с причиной отказа в снятии учета",
+        "operationId": "checkUnregistrationFailure",
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/product": {
+      "post": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Метод изменения продукта пользователя",
+        "operationId": "updateProduct",
+        "requestBody": {
+          "description": "ИД продукта клиента",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeClientCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает результат сохранения.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Профиль самозанятого."
+        ],
+        "summary": "Метод получения информации по продуктам пользователя",
+        "operationId": "getProduct",
+        "responses": {
+          "200": {
+            "description": "Возвращает информацию по профилю пользователя",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseProductInfo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ошибка, в данный момент приложение не доступно."
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/receipt": {
+      "post": {
+        "tags": [
+          "Работа с чеками.( выставление отзыв)"
+        ],
+        "summary": "Получение чека платежа",
+        "description": "Получение чека платежа",
+        "operationId": "generateReceipt",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxPaymentReceiptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Чек",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxPaymentReceiptResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/receipts": {
+      "post": {
+        "tags": [
+          "Работа с чеками.( выставление отзыв)"
+        ],
+        "summary": "Получение чека оплаты платежей",
+        "description": "Получение чека оплаты платежей",
+        "operationId": "generateReceipts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxPaymentReceiptsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Чек",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxPaymentReceiptResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/statistic/income": {
+      "post": {
+        "tags": [
+          "Работа с чеками.( выставление отзыв)"
+        ],
+        "summary": "Статистика по чекам",
+        "operationId": "incomeStatistic",
+        "requestBody": {
+          "description": "Статистика по чекам",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeStatistic"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает результат сохранения.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseWithIncomeStatistic"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/export": {
+      "get": {
+        "tags": [
+          "Работа с чеками.( выставление отзыв)"
+        ],
+        "operationId": "exportReceipts",
+        "summary": "Экспорт списка чеков",
+        "description": "Экспорт списка чеков",
+        "parameters": [
+          {
+            "name": "incomeType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inn",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV-файл",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReferenceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/cancelReceiptRequest": {
+      "post": {
+        "tags": [
+          "Работа с чеками.( выставление отзыв)"
+        ],
+        "summary": "Аннулирование чека",
+        "description": "Аннулирование чека.",
+        "operationId": "cancelReceiptRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelReceiptRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/invoicesForPeriodV2": {
+      "post": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "summary": "Получение информации по созданным счетам",
+        "description": "Получение информации по созданным счетам",
+        "operationId": "invoicesForPeriodV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoicesForPeriodV2Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoicesForPeriodV2Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/invoiceImage/{id}": {
+      "get": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "summary": "Получени изображения счета",
+        "description": "Получение изображения счета",
+        "operationId": "getInvoiceImage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer",
+              "description": "Идентификатор счета",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Изображение счета",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceImageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/invoices/{id}": {
+      "get": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "summary": "Получение информации по счету",
+        "description": "Получение информации по по счету",
+        "operationId": "invoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer",
+              "description": "Идентификатор счета",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Информация о счете",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceByIdResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/invoice/export": {
+      "get": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "operationId": "exportInvoices",
+        "summary": "Экспорт списка счетов",
+        "description": "Экспорт списка счетов",
+        "parameters": [
+          {
+            "name": "incomeType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "inn",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV-файл",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReferenceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/invoiceRegistration": {
+      "post": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "summary": "Создание счета и генерация файла счета",
+        "operationId": "invoiceRegistration",
+        "requestBody": {
+          "description": "Информация о доходе для создания счета",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Счет в формате JPEG (в base64)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRegistrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/cancelInvoice": {
+      "post": {
+        "tags": [
+          "Работа со счетами.(работа с ЮЛ)"
+        ],
+        "summary": "Метод аннулирования счета",
+        "operationId": "cancelInvoice",
+        "requestBody": {
+          "description": "Идетификатор счета и причина отказа",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceCancellationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Результат запроса",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/granted/taxpayment": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Проверка наличия права на оплату налога",
+        "description": "Проверка наличия права на оплату налога",
+        "operationId": "grantedTaxPayment",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/accrualsAndDebts": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Список неоплаченых налоговых начислений.",
+        "description": "Список неоплаченых налоговых начислений.",
+        "operationId": "accrualsAndDebts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListTaxCharge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/paymentAndDebts": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Список неоплаченых налоговых платежей.",
+        "description": "Список неоплаченых налоговых платежей.",
+        "operationId": "paymentAndDebts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListPaymentDocument"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/accruals": {
+      "post": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Список налоговых начислений.",
+        "description": "Список налоговых начислений.",
+        "operationId": "accruals",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxPaymentsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListTaxCharge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/payment": {
+      "post": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Список оплаченых налоговых начислений.",
+        "description": "Список оплаченых налоговых начислений.",
+        "operationId": "payments",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxPaymentsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseListPaymentDocument"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/statistic/tax": {
+      "post": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Статистика по налогам",
+        "operationId": "taxStatistic",
+        "requestBody": {
+          "description": "Статистика по налогам",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeStatistic"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает результат сохранения.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseWithTaxStatistic"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/autopayment": {
+      "post": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Запрос на на включение автоплатежей клиента",
+        "requestBody": {
+          "description": "ИД продукта клиента",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnableAutoPaymentRequest"
+              }
+            }
+          }
+        },
+        "operationId": "clientAutopaymentEnable",
+        "responses": {
+          "200": {
+            "description": "Все хорошо.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseClientWithConfirmation"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/autopayment/status": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Статус автоплатежа",
+        "operationId": "statusAutopayment",
+        "responses": {
+          "200": {
+            "description": "Все хорошо.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseAutopaymentStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/client/isEnabledAutopayment": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Проверка статуса автоплатежа",
+        "operationId": "isEnabledAutopayment",
+        "responses": {
+          "200": {
+            "description": "Все хорошо.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseBoolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка при получении данных клиента"
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/paying": {
+      "post": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Отправка платежа на оплату",
+        "description": "Отправка платежа на оплату",
+        "operationId": "paying",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/TaxPay"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponsePayingDocumentsWithConfirmation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/tax/amountPaying": {
+      "get": {
+        "tags": [
+          "Работа с налогами начислениями ( получения,оплата, автоплатеж)"
+        ],
+        "summary": "Информация о сумме платежей в обработке",
+        "description": "Информация о сумме платежей в обработке",
+        "operationId": "amountPaying",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponsePayingDocumentInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/selfempl/taxpayerAccountStatus": {
+      "get": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Метод получения состояния лицевого счета НП НПД",
+        "operationId": "taxpayerAccountStatus",
+        "responses": {
+          "200": {
+            "description": "Возвращает информацию о состоянии лицевого счета НП НПД",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxpayerAccountStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/selfempl/incomeForPeriod": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Метод получения информации по доходу НП НПД за период",
+        "operationId": "incomeForPeriod",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncomeForPeriodRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает информацию о доходу НП НПД за период",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeForPeriodResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ошибка, в данный момент приложение не доступно."
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/selfempl/income/{id}": {
+      "get": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение информации по доходу",
+        "description": "Получение информации по по доходу",
+        "operationId": "income",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Идентификатор чека"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeByIdResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/notifications/count": {
+      "get": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение количества непрочитанных оповещений",
+        "description": "Получение количества непрочитанных оповещений",
+        "operationId": "unreadNotificationsCount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnreadNotificationsCountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/notifications": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение списка оповещений для НП НПД",
+        "description": "Получение списка оповещений для НП НПД",
+        "operationId": "notificationList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/notifications/delivered": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Отметка оповещений как доставленных клиенту",
+        "description": "Отметка оповещений как доставленных клиенту",
+        "operationId": "markNotificationsAsDelivered",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkNotificationsAsDeliveredRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/notifications/ack": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Отметка оповещения как прочитанного",
+        "description": "Отметка оповещения как прочитанного",
+        "operationId": "markNotificationsAsAck",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkNotificationsAsAckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkNotificationsAsAckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/notifications/arch": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Отметка оповещения как архивного",
+        "description": "Отметка оповещения как архивного",
+        "operationId": "markNotificationsAsArch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkNotificationsAsArchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkNotificationsAsArchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/info/incomeReference/{year}": {
+      "get": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение справки о доходах НП НПД",
+        "description": "Получение справки о доходах НП НПД",
+        "operationId": "incomeReference",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Год формирования справки",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReferenceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/info/registrationReference/{year}": {
+      "get": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение справки о постановке на учет в качестве НП НПД",
+        "description": "Получение справки о постановке на учет в качестве НП НПД",
+        "operationId": "registrationReference",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Год формирования справки",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReferenceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/self-employment/v2/income/incomeForPeriodV2": {
+      "post": {
+        "tags": [
+          "Сообщения ФНС, справочная информация."
+        ],
+        "summary": "Получение информации по зарегистрированным доходам в новом виде",
+        "description": "Получение информации по зарегистрированным доходам в новом виде.",
+        "operationId": "incomeRequestV2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncomeForPeriodV2Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeForPeriodV2Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Status": {
+        "description": "Статус ответа.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Результат запроса",
+            "enum": [
+              "ok",
+              "error"
+            ],
+            "x-enumDescriptions": {
+              "ok": "Возвращает данные",
+              "error": "Возвращает данные об ошбике"
+            }
+          },
+          "error": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorInfo": {
+        "properties": {
+          "code": {
+            "description": "Код ошибки",
+            "type": "string"
+          },
+          "message": {
+            "description": "Текст ошибки",
+            "type": "string"
+          }
+        }
+      },
+      "BaseResponseWithLogicalError": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "ClientState": {
+        "properties": {
+          "status": {
+            "description": "Состояние клиента: * UNKNOWN - Текущий статус клиента не известен, новый клиент. * REQ_BINDING - Требуется привязка НП НПД к платформе-Партнеру * REQ_REGISTRATION - Требуется регистрация НП НПД * REGISTRATION - Постановка на учет * FAILED_REGISTRATION - Ошибка постановки на учет * BINDING - Привязка НП НПД к платформе-Партнеру * FAILED_BINDING - Отказ в привязке НП НПД к платформе-Партнеру * FAILED - Ошибка постановки на учет или заявка на выдачу   прав была отклонена * ACTIVE - Самозанятый активный * UNREGISTERED - Пользователь снят с учета * UNBINDING - Пользователь отозовал полномочия * UNREGISTRATION_SENT - Пользователь отпривил запрос на снятие с учета * UNREGISTRATION_FAILED - ФНС ответил отказом на запрос о снятии с учета\n",
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "REQ_BINDING",
+              "REQ_REGISTRATION",
+              "REGISTRATION",
+              "FAILED_REGISTRATION",
+              "BINDING",
+              "FAILED_BINDING",
+              "FAILED",
+              "ACTIVE",
+              "UNREGISTERED",
+              "UNBINDING",
+              "UNREGISTRATION_SENT",
+              "UNREGISTRATION_FAILED"
+            ],
+            "x-enumDescriptions": {
+              "UNKNOWN": "Текущий статус клиента не известен, новый клиент.",
+              "REQ_BINDING": "Требуется привязка НП НПД к платформе-Партнеру",
+              "REQ_REGISTRATION": "Требуется регистрация НП НПД",
+              "REGISTRATION": "Постановка на учет",
+              "FAILED_REGISTRATION": "Ошибка постановки на учет",
+              "BINDING": "Привязка НП НПД к платформе-Партнеру",
+              "FAILED_BINDING": "Отказ в привязке НП НПД к платформе-Партнеру",
+              "FAILED": "Ошибка постановки на учет или заявка на выдачу   прав была отклонена",
+              "ACTIVE": "Самозанятый активный",
+              "UNREGISTERED": "Пользователь снят с учета",
+              "UNBINDING": "Пользователь отозовал полномочия",
+              "UNREGISTRATION_SENT": "Пользователь отпривил запрос на снятие с учета",
+              "UNREGISTRATION_FAILED": "ФНС ответил отказом на запрос о снятии с учета"
+            }
+          },
+          "errorText": {
+            "type": "string"
+          },
+          "registrationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "unregistrationTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BaseResponseClientState": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ClientState"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "ClientProduct": {
+        "description": "Продукт клиента",
+        "properties": {
+          "clientProductId": {
+            "description": "идентификатор продукта в ПЦ",
+            "type": "string"
+          },
+          "maskedNumber": {
+            "description": "маскированный номер (для карт)",
+            "type": "string"
+          },
+          "accountNumber": {
+            "description": "номер связанного с продуктом счёта",
+            "type": "string"
+          },
+          "currency": {
+            "description": "валюта продукта",
+            "type": "string"
+          },
+          "cardType": {
+            "description": "(Дебетовая - DEBIT, Овердрафтная - OVERDRAFT, Кредитная - CREDIT, Виртуальная - VIRTUAL)",
+            "type": "string",
+            "enum": [
+              "DEBIT",
+              "OVERDRAFT",
+              "CREDIT",
+              "VIRTUAL"
+            ],
+            "x-enumDescriptions": {
+              "DEBIT": "Дебетовая",
+              "OVERDRAFT": "Овердрафтная",
+              "CREDIT": "Кредитная",
+              "VIRTUAL": "Виртуальная"
+            }
+          },
+          "cardPaySystem": {
+            "description": "платёжная система карты (значение кодификатора CardPaySystem)",
+            "type": "string"
+          },
+          "expiryDate": {
+            "description": "срок истечения действия карты",
+            "type": "string",
+            "format": "date-time"
+          },
+          "balance": {
+            "description": "доступный баланс для счетов, доступный баланс на счёте продукта для других продуктов",
+            "type": "number",
+            "format": "double"
+          },
+          "isFavourite": {
+            "description": "логический - признак любимой карты",
+            "type": "boolean"
+          }
+        }
+      },
+      "ClientRegistrationProfile": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "description": "ИНН пользователя (обязательное поле если не указана серия и номер паспорта)"
+          },
+          "firstName": {
+            "description": "Имя пользователя",
+            "type": "string"
+          },
+          "secondName": {
+            "description": "Фамилия пользователя",
+            "type": "string"
+          },
+          "patronymic": {
+            "description": "Отчество пользователя",
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Дата рождения",
+            "format": "date"
+          },
+          "passportSeries": {
+            "description": "Серия паспорта (обязательное поле если не указан ИНН)",
+            "type": "string"
+          },
+          "passportNumber": {
+            "description": "Номер паспорта (обязательное поле если не указан ИНН) ? скрываем на уровне бэка? В примере 4235 8••••0",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Номер телефона ? вопрос скрытия как и в паспорте",
+            "pattern": "^7\\d{10}",
+            "type": "string"
+          },
+          "email": {
+            "description": "Почта ? вопрос скрытия как и в паспорте",
+            "type": "string"
+          },
+          "cards": {
+            "description": "Карты клиента",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClientProduct"
+            }
+          }
+        }
+      },
+      "BaseResponseClientRegistrationProfile": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ClientRegistrationProfile"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "DictionaryRegion": {
+        "type": "object",
+        "properties": {
+          "oktmo": {
+            "type": "string",
+            "description": "ОКТМО региона ведения деятельности"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название региона ведения деятельности"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Признак активности"
+          }
+        },
+        "description": "Данные о регионе"
+      },
+      "BaseResponseListRegions": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Данные по результатам запроса",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DictionaryRegion"
+            }
+          }
+        }
+      },
+      "DictionaryActivities": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID вида деятельности",
+            "format": "int32"
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "ID родительского вида деятельности",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название вида деятельности"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Признак активности вида деятельности в системе"
+          }
+        },
+        "description": "Данные"
+      },
+      "BaseResponseListActivities": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Данные по результатам запроса",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DictionaryActivities"
+            }
+          }
+        }
+      },
+      "UIModelText": {
+        "properties": {
+          "id": {
+            "description": "Идентификатор строки ? Нужен для админки (Возможно делать отдельныы вызовы под админку, сократит объем трафика между клиентом и бэком)",
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "description": "Страница для которой текст",
+            "type": "string"
+          },
+          "key": {
+            "description": "Ключ поля размещения",
+            "type": "string"
+          },
+          "value": {
+            "description": "Текс который необходимо разместить",
+            "type": "string"
+          },
+          "description": {
+            "description": "Описание ? Нужено для админки",
+            "type": "string"
+          }
+        }
+      },
+      "BaseResponseListUIModelText": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Данные по результатам запроса",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UIModelText"
+            }
+          }
+        }
+      },
+      "SeError": {
+        "properties": {
+          "id": {
+            "description": "ID ошибки",
+            "type": "string"
+          },
+          "errorGroup": {
+            "description": "Группа ошибок",
+            "type": "string"
+          },
+          "message": {
+            "description": "Сообщение",
+            "type": "string",
+            "maxLength": 1000
+          },
+          "description": {
+            "description": "Описание",
+            "type": "string"
+          }
+        }
+      },
+      "BaseResponseListSeError": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Список ошибок",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeError"
+            }
+          }
+        }
+      },
+      "FnsRegistrationRequest": {
+        "description": "Данные для регистрации клиента как самозанятого.",
+        "type": "object",
+        "properties": {
+          "clientProductId": {
+            "description": "идентификатор продукта в ПЦ",
+            "type": "string"
+          },
+          "activities": {
+            "type": "array",
+            "description": "Вид деятельности",
+            "items": {
+              "type": "string",
+              "description": "Вид деятельности"
+            }
+          },
+          "oktmo": {
+            "type": "string",
+            "description": "ОКТМО региона преимущественного ведения деятельности на текущий отчетный период"
+          }
+        }
+      },
+      "ConfirmMethod": {
+        "type": "object",
+        "description": "Структура с информацией о методе подтверждения",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Идентификатор устройства подтверждения"
+          },
+          "type": {
+            "type": "string",
+            "description": "Тип способа подтверждения:\n SMS - C использованием SMS-пароля\n SMS_CONTACT_CENTER - C использованием SMS-пароля + звонок в банк\n SOFT_TOKEN - C использованием программного токена\n HARD_TOKEN - C использованием аппаратного токена\n CRYPTO_CALC - C использованием криптокалькулятора\n",
+            "enum": [
+              "SMS",
+              "SMS_CONTACT_CENTER",
+              "SOFT_TOKEN",
+              "HARD_TOKEN",
+              "CRYPTO_CALC"
+            ],
+            "x-enumDescriptions": {
+              "SMS": "C использованием SMS-пароля",
+              "SMS_CONTACT_CENTER": "C использованием SMS-пароля + звонок в банк",
+              "SOFT_TOKEN": "C использованием программного токена",
+              "HARD_TOKEN": "C использованием аппаратного токена",
+              "CRYPTO_CALC": "C использованием криптокалькулятора"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Название способа подтвердения"
+          },
+          "codeMaxLength": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Максимальная длина кода подтверждения для ограничения поля ввода в презентации"
+          },
+          "payControlUserId": {
+            "type": "string",
+            "description": "Идентификатор пользователя в PayControl"
+          },
+          "preselected": {
+            "type": "boolean",
+            "description": "Признак заранее выбранного устройства"
+          },
+          "auto": {
+            "type": "boolean",
+            "description": "Признак автономной работы клиентского компонента"
+          }
+        }
+      },
+      "CreatedRequestInfo": {
+        "type": "object",
+        "description": "информация о подтверждаемых объектах",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "Уникальный идентификатор объекта"
+          },
+          "operationType": {
+            "type": "string",
+            "description": "Тип операции:\n  REGISTRATION - Заявка на регистрацию\n  BINDING - Заявка на привязку\n  ENABLE_AUTO_PAYMENT - Включение автоплатежа\n  CHANGE_CLIENT_CARD - Изменение карты клиента\n  CHANGE_CLIENT_INFO - Изменение информации о клиенте\n  CANCEL_RECEIPT - Аннулирование чека\n  CANCEL_INVOICE - Аннулирование счета\n  UNREGISTRATION - Заявка на снятие с учета\n  TAX_PAYING - Оплата налоговых платежей\n",
+            "enum": [
+              "REGISTRATION",
+              "BINDING",
+              "ENABLE_AUTO_PAYMENT",
+              "CHANGE_CLIENT_CARD",
+              "CHANGE_CLIENT_INFO",
+              "CANCEL_RECEIPT",
+              "CANCEL_INVOICE",
+              "UNREGISTRATION",
+              "TAX_PAYING"
+            ],
+            "x-enumDescriptions": {
+              "REGISTRATION": "Заявка на регистрацию",
+              "BINDING": "Заявка на привязку",
+              "ENABLE_AUTO_PAYMENT": "Включение автоплатежа",
+              "CHANGE_CLIENT_CARD": "Изменение карты клиента",
+              "CHANGE_CLIENT_INFO": "Изменение информации о клиенте",
+              "CANCEL_RECEIPT": "Аннулирование чека",
+              "CANCEL_INVOICE": "Аннулирование счета",
+              "UNREGISTRATION": "Заявка на снятие с учета",
+              "TAX_PAYING": "Оплата налоговых платежей"
+            }
+          },
+          "needConfirmation": {
+            "description": "Флаг, показывающий, необходимо ли выполнять подтверждение операции",
+            "type": "boolean"
+          },
+          "confirmMethods": {
+            "description": "Список доступных методов подтверждения",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfirmMethod"
+            }
+          }
+        }
+      },
+      "BaseResponseClientWithConfirmation": {
+        "type": "object",
+        "description": "Информация о заявке на рег-ю / привязку и список доступных методов подтверждения",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreatedRequestInfo"
+          }
+        }
+      },
+      "ProfileInfo": {
+        "properties": {
+          "inn": {
+            "type": "string",
+            "description": "ИНН пользователя"
+          },
+          "firstName": {
+            "description": "Имя пользователя",
+            "type": "string"
+          },
+          "secondName": {
+            "description": "Фамилия пользователя",
+            "type": "string"
+          },
+          "patronymic": {
+            "description": "Отчество пользователя",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Номер телефона",
+            "type": "string"
+          },
+          "email": {
+            "description": "Почта",
+            "type": "string"
+          },
+          "clientProductId": {
+            "description": "идентификатор выбранного продукта",
+            "type": "string"
+          },
+          "oktmo": {
+            "description": "ОКТМО региона ведения деятельности",
+            "type": "string"
+          },
+          "lastChangeYearOktmo": {
+            "description": "Год последней смены региона вида деятельности",
+            "type": "string"
+          },
+          "activities": {
+            "type": "array",
+            "description": "Вид деятельности",
+            "items": {
+              "type": "string",
+              "description": "Вид деятельности"
+            }
+          }
+        }
+      },
+      "BaseResponseProfileInfo": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProfileInfo"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "ProfileRequest": {
+        "properties": {
+          "oktmo": {
+            "description": "ОКТМО региона ведения деятельности",
+            "type": "string"
+          },
+          "activities": {
+            "type": "array",
+            "description": "Вид деятельности",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BaseResponseBoolean": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Boolean ответ на запрос",
+            "type": "boolean"
+          }
+        }
+      },
+      "ServiceDictionary": {
+        "description": "Справочник оказываемых услуг на основе заведенных чеков",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Список услуг",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Customer": {
+        "description": "Данные покупателя",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Источник/Тип дохода",
+            "type": "string"
+          },
+          "inn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "organization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          }
+        }
+      },
+      "CustomerDictionary": {
+        "description": "Справочник данных покупателя",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Список",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            }
+          }
+        }
+      },
+      "UnregistrationReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          }
+        }
+      },
+      "UnregistrationReasonsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnregistrationReason"
+            }
+          }
+        }
+      },
+      "BaseResponseStatus": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        }
+      },
+      "BaseResponseProductInfo": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Продукты клиента",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClientProduct"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "ChangeClientCardRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "enableAutopayment": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TaxPaymentReceiptRequest": {
+        "type": "object",
+        "properties": {
+          "taxChargeId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "TaxPaymentReceiptResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "receipt": {
+                "type": "string",
+                "format": "byte"
+              }
+            }
+          }
+        }
+      },
+      "TaxPaymentReceiptsRequest": {
+        "type": "object",
+        "properties": {
+          "documentIndexes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SeStatistic": {
+        "properties": {
+          "oktmo": {
+            "description": "Регион",
+            "type": "string"
+          },
+          "year": {
+            "description": "Год",
+            "type": "string"
+          }
+        }
+      },
+      "IncomeStatistic": {
+        "properties": {
+          "incomeType": {
+            "description": "Источник/Тип дохода",
+            "type": "string"
+          },
+          "totalAmount": {
+            "description": "Общая стоимость оказанных услуг",
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ResponseWithIncomeStatistic": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeStatistic"
+            }
+          }
+        }
+      },
+      "BaseResponseWithIncomeStatistic": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ResponseWithIncomeStatistic"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "ReferenceResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "mimetype": {
+                "type": "string",
+                "description": "Медиа тип файла"
+              },
+              "filename": {
+                "type": "string",
+                "description": "Имя файла"
+              },
+              "content": {
+                "type": "string",
+                "description": "Содержимое файла",
+                "format": "byte"
+              }
+            }
+          }
+        }
+      },
+      "CancelReceiptRequest": {
+        "required": [
+          "receiptId",
+          "code"
+        ],
+        "description": "Сторнирование чека",
+        "type": "object",
+        "properties": {
+          "receiptId": {
+            "description": "Id чека",
+            "type": "string"
+          },
+          "code": {
+            "description": "Код причины аннулирования чека REFUND |  REGISTRATION_MISTAKE",
+            "type": "string"
+          }
+        }
+      },
+      "InvoicesForPeriodV2Request": {
+        "description": "Получение информации по созданным счетам",
+        "type": "object",
+        "properties": {
+          "incomeType": {
+            "description": "Источник/Тип дохода",
+            "type": "string",
+            "enum": [
+              "FROM_LEGAL_ENTITY",
+              "FROM_FOREIGN_AGENCY"
+            ],
+            "x-enumDescriptions": {
+              "FROM_LEGAL_ENTITY": null,
+              "FROM_FOREIGN_AGENCY": null
+            }
+          },
+          "status": {
+            "description": "Статус",
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ACCEPT",
+              "CANCELLED"
+            ],
+            "x-enumDescriptions": {
+              "NEW": null,
+              "ACCEPT": null,
+              "CANCELLED": null
+            }
+          },
+          "from": {
+            "description": "Дата, начиная с которой отображать зарегистрированные доходы",
+            "type": "string",
+            "format": "date"
+          },
+          "to": {
+            "description": "Дата, до которой отображать зарегистрированные доходы",
+            "type": "string",
+            "format": "date"
+          },
+          "organization": {
+            "description": "Название организации",
+            "type": "string"
+          },
+          "inn": {
+            "description": "ИНН клиента, которому оказана услуга",
+            "type": "string"
+          },
+          "page": {
+            "description": "Номер страницы",
+            "type": "integer",
+            "default": 0
+          },
+          "size": {
+            "description": "Размер страницы",
+            "type": "integer",
+            "default": 50
+          }
+        }
+      },
+      "Invoice": {
+        "description": "Информация о счете",
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "description": "ID счета",
+            "type": "string"
+          },
+          "invoiceNum": {
+            "description": "Номер счета",
+            "type": "string"
+          },
+          "link": {
+            "description": "Ссылка на чек",
+            "type": "string"
+          },
+          "totalAmount": {
+            "description": "Сумма счета",
+            "type": "number",
+            "format": "decimal"
+          },
+          "incomeType": {
+            "type": "string"
+          },
+          "operationTime": {
+            "description": "Дата расчёта",
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerInn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "customerOrganization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          },
+          "cancellationTime": {
+            "description": "Дата сторнирования",
+            "type": "string",
+            "format": "date-time"
+          },
+          "cancellationCode": {
+            "description": "Код причины аннулирования чека REFUND |  REGISTRATION_MISTAKE",
+            "type": "string"
+          },
+          "services": {
+            "description": "услуги",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "description": "Статус счета",
+            "type": "string"
+          }
+        }
+      },
+      "InvoicesForPeriodV2Response": {
+        "description": "Список счетов",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "invoices": {
+                "description": "Счета",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Invoice"
+                }
+              },
+              "page": {
+                "description": "Номер страницы",
+                "type": "integer"
+              },
+              "size": {
+                "description": "Кол-во эл-в на странице",
+                "type": "integer"
+              },
+              "totalPages": {
+                "description": "Суммарное кол-во страниц",
+                "type": "integer"
+              },
+              "totalElements": {
+                "description": "Суммарное кол-во элементов",
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        }
+      },
+      "InvoiceImageResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "description": "Содержимое файла",
+                "format": "byte"
+              }
+            }
+          }
+        }
+      },
+      "IncomeService": {
+        "description": "Информация по оказанной услуге",
+        "type": "object",
+        "required": [
+          "amount",
+          "name",
+          "quantity"
+        ],
+        "properties": {
+          "amount": {
+            "description": "Цена",
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.01
+          },
+          "name": {
+            "description": "Наименование",
+            "type": "string",
+            "maxLength": 256
+          },
+          "quantity": {
+            "description": "Количество",
+            "type": "integer"
+          }
+        }
+      },
+      "InvoiceFullInfo": {
+        "description": "Информация о счете для операции копирования",
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "description": "ID счета",
+            "type": "integer",
+            "format": "int64"
+          },
+          "invoiceNum": {
+            "description": "Номер счета",
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalAmount": {
+            "description": "Сумма счета",
+            "type": "number",
+            "format": "decimal"
+          },
+          "incomeType": {
+            "type": "string"
+          },
+          "operationTime": {
+            "description": "Дата расчёта",
+            "type": "string",
+            "format": "date-time"
+          },
+          "requestTime": {
+            "description": "Дата запроса на создание счета",
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerInn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "supplierInn": {
+            "description": "ИНН СЗ",
+            "type": "string"
+          },
+          "customerOrganization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          },
+          "cancellationTime": {
+            "description": "Дата сторнирования",
+            "type": "string",
+            "format": "date-time"
+          },
+          "cancellationCode": {
+            "description": "Код причины аннулирования чека REFUND |  REGISTRATION_MISTAKE",
+            "type": "string"
+          },
+          "services": {
+            "description": "Список услуг",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeService"
+            }
+          },
+          "status": {
+            "description": "Статус счета",
+            "type": "string"
+          }
+        }
+      },
+      "InvoiceByIdResponse": {
+        "description": "Ответ на запрос получения счета для операции копирования",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/InvoiceFullInfo"
+          }
+        }
+      },
+      "InvoiceRegistrationRequest": {
+        "description": "Запрос на создание счета и генерацию файла счета",
+        "type": "object",
+        "required": [
+          "operationTime",
+          "incomeType",
+          "customerOrganization",
+          "services",
+          "totalAmount"
+        ],
+        "properties": {
+          "operationTime": {
+            "description": "Дата выставления счета",
+            "type": "string"
+          },
+          "incomeType": {
+            "description": "Источник/Тип дохода",
+            "type": "string",
+            "enum": [
+              "FROM_LEGAL_ENTITY",
+              "FROM_FOREIGN_AGENCY"
+            ],
+            "x-enumDescriptions": {
+              "FROM_LEGAL_ENTITY": null,
+              "FROM_FOREIGN_AGENCY": null
+            }
+          },
+          "customerInn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "customerOrganization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          },
+          "services": {
+            "description": "Список услуг",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeService"
+            },
+            "oneOf": [
+              {
+                "minItems": 1
+              },
+              {
+                "maxItems": 6
+              }
+            ]
+          },
+          "totalAmount": {
+            "description": "Общая стоимость оказанных услуг",
+            "type": "number",
+            "format": "decimal",
+            "minimum": 0.01
+          }
+        }
+      },
+      "InvoiceContent": {
+        "description": "Счет в формета JPEG (в base64)",
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      },
+      "InvoiceRegistrationResponse": {
+        "description": "Ответ на создание счета",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/InvoiceContent"
+          }
+        }
+      },
+      "InvoiceCancellationRequest": {
+        "required": [
+          "invoiceId"
+        ],
+        "description": "Запрос на аннулирование счета",
+        "type": "object",
+        "properties": {
+          "invoiceId": {
+            "description": "Id счета",
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "description": "Код причины отказа",
+            "type": "string"
+          }
+        }
+      },
+      "TaxCharge": {
+        "description": "Налоговое начисление",
+        "type": "object",
+        "properties": {
+          "sourceId": {
+            "description": "Внутренний идентификатор налогового начисления в ПП НПД",
+            "type": "integer",
+            "format": "int64"
+          },
+          "oktmo": {
+            "description": "ОКТМО региона ведения деятельности",
+            "type": "string"
+          },
+          "kbk": {
+            "description": "Код бюджетной классификации",
+            "type": "string"
+          },
+          "paidAmount": {
+            "description": "Сумма поступивших оплат в АИС Налог 3 по данному начислению",
+            "type": "number",
+            "format": "decimal"
+          },
+          "taxPeriodId": {
+            "description": "ID налогового периода (YYYYMM)",
+            "type": "string"
+          },
+          "dueDate": {
+            "description": "Срок оплаты",
+            "type": "string",
+            "format": "date"
+          },
+          "createTime": {
+            "description": "Дата/Время создания налогового начисления",
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "description": "Сумма начисления",
+            "type": "number",
+            "format": "decimal"
+          },
+          "debt": {
+            "type": "number",
+            "description": "Сумма задолженности по карточке"
+          },
+          "penalty": {
+            "type": "number",
+            "description": "Сумма пени по карточке"
+          },
+          "overpayment": {
+            "type": "number",
+            "description": "Сумма переплаты по карточке"
+          }
+        }
+      },
+      "BaseResponseListTaxCharge": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Список платежных документов",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxCharge"
+            }
+          }
+        }
+      },
+      "TaxPayment": {
+        "description": "Налоговое начисление",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Тип платежа",
+            "type": "string"
+          },
+          "sourceId": {
+            "description": "Внутренний идентификатор налогового начисления в ПП НПД",
+            "type": "integer",
+            "format": "int64"
+          },
+          "documentIndex": {
+            "description": "Индекс документа (УИН)",
+            "type": "string"
+          },
+          "oktmo": {
+            "description": "ОКТМО региона ведения деятельности",
+            "type": "string"
+          },
+          "taxPeriodId": {
+            "description": "ID налогового периода (YYYYMM)",
+            "type": "string"
+          },
+          "dueDate": {
+            "description": "Срок оплаты",
+            "type": "string",
+            "format": "date"
+          },
+          "createTime": {
+            "description": "Дата/Время создания налогового начисления",
+            "type": "string",
+            "format": "date-time"
+          },
+          "registerTime": {
+            "description": "Дата/Время оплаты",
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "description": "Сумма начисления",
+            "type": "number",
+            "format": "decimal"
+          },
+          "clientProductId": {
+            "description": "идентификатор продукта в БД Interbank RS",
+            "type": "string"
+          },
+          "maskedCardNum": {
+            "description": "Маскированный номер карты",
+            "type": "string"
+          },
+          "cardPaymentSystem": {
+            "description": "Платёжная система карты, с которой производилась оплата",
+            "type": "string"
+          },
+          "cardCurrency": {
+            "description": "Валюта счета карты",
+            "type": "string"
+          },
+          "paymentType": {
+            "description": "Тип",
+            "type": "string"
+          },
+          "status": {
+            "description": "Статус",
+            "type": "string"
+          },
+          "description": {
+            "description": "Причина отказа платежа",
+            "type": "string"
+          },
+          "taxChargeId": {
+            "description": "Идентификатор оплаченного налогового начисления",
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "BaseResponseListPaymentDocument": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Список платежных документов",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxPayment"
+            }
+          }
+        }
+      },
+      "TaxPaymentsRequest": {
+        "properties": {
+          "year": {
+            "description": "Год",
+            "type": "string"
+          },
+          "regions": {
+            "description": "Список регионов",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "statuses": {
+            "description": "Статусы",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TaxStatistic": {
+        "properties": {
+          "status": {
+            "description": "Статус",
+            "type": "string"
+          },
+          "totalAmount": {
+            "description": "Общая сумма налога",
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ResponseWithTaxStatistic": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxStatistic"
+            }
+          }
+        }
+      },
+      "BaseResponseWithTaxStatistic": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ResponseWithTaxStatistic"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        }
+      },
+      "EnableAutoPaymentRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          }
+        }
+      },
+      "AutopaymentStatus": {
+        "type": "object",
+        "description": "Информация о статусе автоплатежа",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Статус"
+          },
+          "message": {
+            "type": "string",
+            "description": "Сообщение"
+          }
+        }
+      },
+      "BaseResponseAutopaymentStatus": {
+        "type": "object",
+        "description": "Информация о статусе автоплатежа",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AutopaymentStatus"
+          }
+        }
+      },
+      "TaxPay": {
+        "description": "Список платежей на оплату",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Тип платежа",
+            "type": "string"
+          },
+          "documentIndex": {
+            "description": "Индекс документа (УИН)",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Сумма начисления",
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "BaseResponsePayingDocumentsWithConfirmation": {
+        "type": "object",
+        "description": "Отправка налога на оплату",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreatedRequestInfo"
+          }
+        }
+      },
+      "BaseResponsePayingDocumentInfo": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "description": "Сумма платежей в оплате",
+            "type": "object",
+            "properties": {
+              "amountPaying": {
+                "description": "Сумма в оплате",
+                "type": "number",
+                "format": "decimal"
+              },
+              "message": {
+                "description": "текст сообщения",
+                "type": "string"
+              },
+              "taxPay": {
+                "description": "признак наличия неоплаченных платежей",
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "TaxAccountInfo": {
+        "properties": {
+          "taxCount": {
+            "description": "Сумма чеков за текущий месяц",
+            "type": "integer"
+          },
+          "bonusAmount": {
+            "description": "Сумма бонусного счета",
+            "type": "number",
+            "format": "decimal"
+          },
+          "unpaidAmount": {
+            "description": "Общая сумма неоплаченных платежей",
+            "type": "number",
+            "format": "decimal"
+          },
+          "debtAmount": {
+            "description": "Сумма задолжности (включена в общая сумму неоплаченных платежей)",
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "TaxpayerAccountStatusResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "tax": {
+            "$ref": "#/components/schemas/TaxAccountInfo"
+          }
+        }
+      },
+      "IncomeForPeriodRequest": {
+        "description": "Получение информации по доходу НП НПД за период",
+        "type": "object",
+        "properties": {
+          "taxPeriodId": {
+            "description": "ID налогового периода (YYYYMM)",
+            "pattern": "(2)(\\d{3})(0|1)([0-9])",
+            "type": "string"
+          }
+        }
+      },
+      "IncomeForPeriod": {
+        "description": "Ответ на GetIncomeForPeriodRequest",
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "description": "Сумма зарегистрированного дохода за период",
+            "type": "number",
+            "format": "decimal"
+          },
+          "canceledTotalAmount": {
+            "description": "Сумма сторнированного дохода за период",
+            "type": "number",
+            "format": "decimal"
+          },
+          "tax": {
+            "description": "Рассчитанный налог за период",
+            "type": "number",
+            "format": "decimal"
+          },
+          "yearAmount": {
+            "description": "Сумма зарегистрированного дохода за текущий год",
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "IncomeForPeriodResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "tax": {
+            "$ref": "#/components/schemas/IncomeForPeriod"
+          }
+        }
+      },
+      "ReceiptV2Se": {
+        "description": "Информация о выписанном чеке",
+        "type": "object",
+        "properties": {
+          "link": {
+            "description": "Ссылка на чек",
+            "type": "string"
+          },
+          "totalAmount": {
+            "description": "Сумма чека",
+            "type": "number",
+            "format": "decimal"
+          },
+          "hasCreatedThis": {
+            "description": "Признак того что сек сделан в нашей системе",
+            "type": "boolean"
+          },
+          "receiptId": {
+            "description": "ID чека ФНС",
+            "type": "string"
+          },
+          "incomeType": {
+            "type": "string"
+          },
+          "requestTime": {
+            "description": "Дата формирования",
+            "type": "string",
+            "format": "date-time"
+          },
+          "operationTime": {
+            "description": "Дата расчёта",
+            "type": "string",
+            "format": "date-time"
+          },
+          "taxPeriodId": {
+            "description": "ID налогового периода (YYYYMM)",
+            "pattern": "(2)(\\d{3})(0|1)([0-9])",
+            "type": "string"
+          },
+          "taxToPay": {
+            "description": "Налог к уплате с данного чека (начисленный налог - использованный бонус)",
+            "type": "number",
+            "format": "decimal"
+          },
+          "partnerCode": {
+            "description": "ID банка/платформы-партнера",
+            "type": "string"
+          },
+          "supplierInn": {
+            "description": "ИНН поставщика данных(площадки третьего звена)",
+            "type": "string"
+          },
+          "customerInn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "customerOrganization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          },
+          "status": {
+            "description": "Статус",
+            "type": "string"
+          },
+          "cancelationTime": {
+            "description": "Дата сторнирования",
+            "type": "string",
+            "format": "date-time"
+          },
+          "cancellationCode": {
+            "description": "Код причины аннулирования чека REFUND |  REGISTRATION_MISTAKE",
+            "type": "string"
+          },
+          "billInBase64": {
+            "description": "Чек в base64",
+            "type": "string"
+          },
+          "services": {
+            "description": "Список услуг",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeService"
+            }
+          }
+        }
+      },
+      "IncomeByIdResponse": {
+        "description": "Ответ на запрос получения чека",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReceiptV2Se"
+          }
+        }
+      },
+      "UnreadNotificationsCountResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "description": "Количество непрочитанных сообщений",
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "NotificationsRequest": {
+        "properties": {
+          "getAcknowledged": {
+            "description": "Показывать прочитанные",
+            "type": "boolean",
+            "default": false
+          },
+          "getArchived": {
+            "description": "Показывать заархивированные",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "Notification": {
+        "properties": {
+          "id": {
+            "description": "Идентификатор",
+            "type": "string"
+          },
+          "title": {
+            "description": "Заголовок",
+            "type": "string"
+          },
+          "message": {
+            "description": "Сообщение",
+            "type": "string"
+          },
+          "status": {
+            "description": "Статус NEW – новое (непрочитанное) оповещение. ACKNOWLEDGED – прочитанное оповещение. ARCHIVED – оповещение, отправленное в архив.",
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ACKNOWLEDGED",
+              "ARCHIVED"
+            ],
+            "x-enumDescriptions": {
+              "NEW": "новое (непрочитанное) оповещение.",
+              "ACKNOWLEDGED": "прочитанное оповещение.",
+              "ARCHIVED": "оповещение, отправленное в архив."
+            }
+          },
+          "createdAt": {
+            "description": "Время создания",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "description": "Время последнего обновления",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NotificationListResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "notifications": {
+                "description": "Список сообщений",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MarkNotificationsAsDeliveredRequest": {
+        "properties": {
+          "notificationIds": {
+            "description": "Массив идентификаторов оповещений со статусом NEW",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MarkNotificationsAsAckRequest": {
+        "properties": {
+          "notificationIds": {
+            "description": "Массив идентификаторов оповещений",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MarkNotificationsAsAckResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "description": "Статус операции OK - успешно NOK - неуспешно",
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "NOK"
+                ],
+                "x-enumDescriptions": {
+                  "OK": "успешно",
+                  "NOK": "неуспешно"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MarkNotificationsAsArchRequest": {
+        "properties": {
+          "notificationIds": {
+            "description": "Массив идентификаторов оповещений",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MarkNotificationsAsArchResponse": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "description": "Статус операции OK - успешно NOK - неуспешно",
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "NOK"
+                ],
+                "x-enumDescriptions": {
+                  "OK": "успешно",
+                  "NOK": "неуспешно"
+                }
+              }
+            }
+          }
+        }
+      },
+      "IncomeForPeriodV2Request": {
+        "description": "Получение информации по зарегистрированным доходам с поддержкой нескольких услуг в чеках",
+        "type": "object",
+        "properties": {
+          "incomeType": {
+            "description": "Источник/Тип дохода",
+            "type": "string"
+          },
+          "status": {
+            "description": "Статус",
+            "type": "string"
+          },
+          "from": {
+            "description": "Дата, начиная с которой отображать зарегистрированные доходы",
+            "type": "string",
+            "format": "date"
+          },
+          "to": {
+            "description": "Дата, до которой отображать зарегистрированные доходы",
+            "type": "string",
+            "format": "date"
+          },
+          "organization": {
+            "description": "Название организации",
+            "type": "string"
+          },
+          "inn": {
+            "description": "ИНН клиента, которому оказана услуга",
+            "type": "string"
+          },
+          "page": {
+            "description": "Номер страницы",
+            "type": "integer",
+            "default": 0
+          },
+          "size": {
+            "description": "Размер страницы",
+            "type": "integer",
+            "default": 50
+          }
+        }
+      },
+      "Receipt": {
+        "description": "Информация о выписанном чеке",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "ID чека",
+            "type": "integer",
+            "format": "int64"
+          },
+          "receiptId": {
+            "description": "ID чека ФНС",
+            "type": "string"
+          },
+          "link": {
+            "description": "Ссылка на чек",
+            "type": "string"
+          },
+          "billInBase64": {
+            "description": "Offline картинка чека, если он еще не отправлен.",
+            "type": "string"
+          },
+          "totalAmount": {
+            "description": "Сумма чека",
+            "type": "number",
+            "format": "decimal"
+          },
+          "taxToPay": {
+            "description": "Налог к уплате с данного чека (начисленный налог - использованный бонус)",
+            "type": "number",
+            "format": "decimal"
+          },
+          "incomeType": {
+            "type": "string"
+          },
+          "operationTime": {
+            "description": "Дата расчёта",
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerInn": {
+            "description": "ИНН покупателя",
+            "type": "string"
+          },
+          "customerOrganization": {
+            "description": "Организация покупателя",
+            "type": "string"
+          },
+          "cancelationTime": {
+            "description": "Дата сторнирования",
+            "type": "string",
+            "format": "date-time"
+          },
+          "cancellationCode": {
+            "description": "Код причины аннулирования чека REFUND |  REGISTRATION_MISTAKE",
+            "type": "string"
+          },
+          "services": {
+            "description": "услуги",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "description": "Статус чека",
+            "type": "string"
+          }
+        }
+      },
+      "IncomeForPeriodV2Response": {
+        "description": "Ответ на GetIncomeRequestV2",
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "hasMore": {
+                "description": "Есть ли ещё чеки в списке",
+                "type": "boolean"
+              },
+              "receipts": {
+                "description": "Список полученных чеков",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              },
+              "page": {
+                "description": "Номер страницы",
+                "type": "integer"
+              },
+              "size": {
+                "description": "Кол-во эл-в на странице",
+                "type": "integer"
+              },
+              "totalPages": {
+                "description": "Суммарное кол-во страниц",
+                "type": "integer"
+              },
+              "totalElements": {
+                "description": "Суммарное кол-во элементов",
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
